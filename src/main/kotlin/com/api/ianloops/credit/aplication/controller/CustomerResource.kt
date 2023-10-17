@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/customers")
 class CustomerResource(private val customerService: CustomerService) {
 
     @PostMapping
