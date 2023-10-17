@@ -1,8 +1,7 @@
 package com.api.ianloops.credit.aplication.service.impl
 
-import com.api.ianloops.credit.aplication.CreditApplication
+import com.api.ianloops.credit.aplication.exception.BusinessException
 import com.api.ianloops.credit.aplication.model.Credit
-import com.api.ianloops.credit.aplication.model.Customer
 import com.api.ianloops.credit.aplication.repository.CreditRepository
 import com.api.ianloops.credit.aplication.service.ICreditService
 import org.springframework.stereotype.Service
@@ -28,6 +27,6 @@ class CreditService(
     override fun findByCreditCode(customerId: Long, creditCode: UUID): Credit {
         val credit: Credit = this.creditRepository.findByCreditCode(creditCode)
             ?: throw RuntimeException("Credit Code $creditCode does not exist")
-        return if (credit.customer?.id == customerId) credit else throw RuntimeException ("Contact Admin")
+        return if (credit.customer?.id == customerId) credit else throw BusinessException ("Contact Admin")
     }
 }

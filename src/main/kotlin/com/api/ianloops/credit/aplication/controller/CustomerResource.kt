@@ -5,6 +5,7 @@ import com.api.ianloops.credit.aplication.dto.CustomerUpdateDto
 import com.api.ianloops.credit.aplication.dto.CustomerView
 import com.api.ianloops.credit.aplication.model.Customer
 import com.api.ianloops.credit.aplication.service.impl.CustomerService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 class CustomerResource(private val customerService: CustomerService) {
 
     @PostMapping
-    fun saveCustomer(@RequestBody customerDto: CustomerDto): ResponseEntity<String> {
+    fun saveCustomer(@RequestBody @Valid customerDto: CustomerDto): ResponseEntity<String> {
         val savedCustomer = this.customerService.save(customerDto.toEntity())
         val message = "Customer ${savedCustomer.email} saved!"
         return ResponseEntity.status(HttpStatus.CREATED).body(message)
@@ -27,6 +28,7 @@ class CustomerResource(private val customerService: CustomerService) {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteCustomer(@PathVariable id: Long) = this.customerService.delete(id)
 
     @PatchMapping
@@ -34,7 +36,7 @@ class CustomerResource(private val customerService: CustomerService) {
         @RequestParam(value = " customerId")
         id: Long,
 
-        @RequestBody customerUpdateDto: CustomerUpdateDto
+        @RequestBody @Valid customerUpdateDto: CustomerUpdateDto
     ): ResponseEntity<CustomerView> {
         val customer: Customer = this.customerService.findById(id)
         val customerToUpdate = customerUpdateDto.toEntity(customer)
