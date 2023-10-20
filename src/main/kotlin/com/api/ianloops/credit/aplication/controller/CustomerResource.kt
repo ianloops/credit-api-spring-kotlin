@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.*
 class CustomerResource(private val customerService: CustomerService) {
 
     @PostMapping
-    fun saveCustomer(@RequestBody @Valid customerDto: CustomerDto): ResponseEntity<String> {
-        val savedCustomer = this.customerService.save(customerDto.toEntity())
-        val message = "Customer ${savedCustomer.email} saved!"
-        return ResponseEntity.status(HttpStatus.CREATED).body(message)
+    fun saveCustomer(@RequestBody @Valid customerDto: CustomerDto): ResponseEntity<CustomerView> {
+        val savedCustomer : Customer= this.customerService.save(customerDto.toEntity())
+        return ResponseEntity.status(HttpStatus.CREATED).body(CustomerView(savedCustomer))
     }
 
     @GetMapping("/{id}")
